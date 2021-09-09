@@ -1,0 +1,17 @@
+server:
+  port: 8799
+  error:
+    whitelabel:
+      enabled: false
+    path: /error
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: articles
+  jackson:
+    default-property-inclusion: non_null
+    property-naming-strategy: SNAKE_CASE
+
+anonymous-allowed: true
