@@ -4,4 +4,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = "articles"
+rootProject.name = "articles-backend"
