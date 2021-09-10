@@ -1,6 +1,6 @@
 package io.github.malczuuu.articles.backend.core.context;
 
-public class HeaderContext {
+public class HeaderContext implements SecurityContext {
 
   private final String realm;
   private final String userid;
@@ -12,14 +12,17 @@ public class HeaderContext {
     this.username = username;
   }
 
+  @Override
   public String getRealm() {
     return realm;
   }
 
+  @Override
   public String getUserid() {
     return userid;
   }
 
+  @Override
   public String getUsername() {
     return username;
   }

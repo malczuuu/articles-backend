@@ -2,8 +2,9 @@ package io.github.malczuuu.articles.backend.rest;
 
 import io.github.malczuuu.articles.backend.core.article.ArticleNotFoundException;
 import io.github.malczuuu.articles.backend.core.article.ArticleService;
-import io.github.malczuuu.articles.backend.core.context.HeaderContext;
 import io.github.malczuuu.articles.backend.core.context.HeaderContextService;
+import io.github.malczuuu.articles.backend.core.context.SecurityContext;
+import io.github.malczuuu.articles.backend.core.context.SecurityContextService;
 import io.github.malczuuu.articles.backend.model.ArticleCreateModel;
 import io.github.malczuuu.articles.backend.model.ArticleModel;
 import io.github.malczuuu.articles.backend.model.ArticleUpdateModel;
@@ -28,19 +29,19 @@ public class ArticleController {
   private static final int DEFAULT_LIMIT = 20;
 
   private final ArticleService articleService;
-  private final HeaderContextService headerContextService;
+  private final SecurityContextService securityContextService;
 
   public ArticleController(
-      ArticleService articleService, HeaderContextService headerContextService) {
+      ArticleService articleService, HeaderContextService securityContextService) {
     this.articleService = articleService;
-    this.headerContextService = headerContextService;
+    this.securityContextService = securityContextService;
   }
 
   @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
   public SliceModel<ArticleModel> findArticles(
       @RequestHeader HttpHeaders headers,
       @RequestParam(name = "limit", defaultValue = "20") String limit) {
-    HeaderContext context = headerContextService.getContext(headers);
+    SecurityContext context = securityContextService.getContext(headers);
     int limitAsInt = parseLimit(limit);
     return articleService.findArticles(context.getRealm(), context.getUserid(), limitAsInt);
   }
@@ -64,7 +65,7 @@ public class ArticleController {
       @RequestHeader HttpHeaders headers,
       @RequestParam(name = "cursor") String cursor,
       @RequestParam(name = "limit", defaultValue = "20") String limit) {
-    HeaderContext context = headerContextService.getContext(headers);
+    SecurityContext context = securityContextService.getContext(headers);
     int limitAsInt = parseLimit(limit);
     return articleService.findArticles(context.getRealm(), context.getUserid(), limitAsInt, cursor);
   }
@@ -73,7 +74,7 @@ public class ArticleController {
       path = "/{id}",
       produces = {MediaType.APPLICATION_JSON_VALUE})
   public ArticleModel findNote(HttpHeaders headers, @PathVariable("id") String id) {
-    HeaderContext context = headerContextService.getContext(headers);
+    SecurityContext context = securityContextService.getContext(headers);
     return articleService
         .findArticle(context.getRealm(), context.getUserid(), id)
         .orElseThrow(ArticleNotFoundException::new);
@@ -84,7 +85,7 @@ public class ArticleController {
       produces = {MediaType.APPLICATION_JSON_VALUE})
   public ArticleModel createNote(
       @RequestHeader HttpHeaders headers, @RequestBody ArticleCreateModel requestBody) {
-    HeaderContext context = headerContextService.getContext(headers);
+    SecurityContext context = securityContextService.getContext(headers);
     return articleService.createArticle(context.getRealm(), context.getUserid(), requestBody);
   }
 
@@ -96,7 +97,7 @@ public class ArticleController {
       @RequestHeader HttpHeaders headers,
       @PathVariable("id") String id,
       @RequestBody ArticleUpdateModel requestBody) {
-    HeaderContext context = headerContextService.getContext(headers);
+    SecurityContext context = securityContextService.getContext(headers);
     return articleService
         .updateArticle(context.getRealm(), context.getUserid(), id, requestBody)
         .orElseThrow(ArticleNotFoundException::new);
@@ -107,7 +108,7 @@ public class ArticleController {
       @RequestHeader HttpHeaders headers,
       @PathVariable("id") String id,
       @RequestBody ArticleUpdateModel requestBody) {
-    HeaderContext context = headerContextService.getContext(headers);
+    SecurityContext context = securityContextService.getContext(headers);
     articleService.deleteArticle(context.getRealm(), context.getUserid(), id);
   }
 }

@@ -6,7 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 @Service
-public class HeaderContextService {
+public class HeaderContextService implements SecurityContextService {
 
   private final boolean anonymousAllowed;
   private final String defaultRealm;
@@ -30,7 +30,8 @@ public class HeaderContextService {
     this.usernameHeader = usernameHeader;
   }
 
-  public HeaderContext getContext(HttpHeaders headers) throws AccessDeniedException {
+  @Override
+  public SecurityContext getContext(HttpHeaders headers) throws AccessDeniedException {
     String realm = headers.getFirst(realmHeader);
     String userid = headers.getFirst(useridHeader);
     String username = headers.getFirst(usernameHeader);
