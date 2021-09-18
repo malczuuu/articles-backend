@@ -16,6 +16,7 @@ public class ArticleEntity implements Persistable<ObjectId> {
   public static final String REALM = "realm";
   public static final String UID = "uid";
   public static final String OWNER = "owner";
+  public static final String TITLE = "title";
   public static final String CONTENT = "content";
   public static final String LAST_MODIFIED_DATE = "lastModifiedDate";
 
@@ -31,6 +32,9 @@ public class ArticleEntity implements Persistable<ObjectId> {
   @Field(name = OWNER)
   private String owner;
 
+  @Field(name = TITLE)
+  private String title;
+
   @Field(name = CONTENT)
   private String content;
 
@@ -40,8 +44,8 @@ public class ArticleEntity implements Persistable<ObjectId> {
 
   public ArticleEntity() {}
 
-  public ArticleEntity(String realm, String uid, String owner, String content) {
-    this(null, realm, uid, owner, content, null);
+  public ArticleEntity(String realm, String uid, String owner, String title, String content) {
+    this(null, realm, uid, owner, title, content, null);
   }
 
   public ArticleEntity(
@@ -49,12 +53,14 @@ public class ArticleEntity implements Persistable<ObjectId> {
       String realm,
       String uid,
       String owner,
+      String title,
       String content,
       Instant lastModifiedDate) {
     this.id = id;
     this.uid = uid;
     this.realm = realm;
     this.owner = owner;
+    this.title = title;
     this.content = content;
     this.lastModifiedDate = lastModifiedDate;
   }
@@ -79,6 +85,10 @@ public class ArticleEntity implements Persistable<ObjectId> {
 
   public String getOwner() {
     return owner;
+  }
+
+  public String getTitle() {
+    return title;
   }
 
   public String getContent() {

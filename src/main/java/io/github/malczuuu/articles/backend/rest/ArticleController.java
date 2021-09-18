@@ -61,7 +61,7 @@ public class ArticleController {
   @GetMapping(
       params = {"cursor"},
       produces = {MediaType.APPLICATION_JSON_VALUE})
-  public SliceModel<ArticleModel> findNotesWithCursor(
+  public SliceModel<ArticleModel> findArticlesWithCursor(
       @RequestHeader HttpHeaders headers,
       @RequestParam(name = "cursor") String cursor,
       @RequestParam(name = "limit", defaultValue = "20") String limit) {
@@ -73,7 +73,8 @@ public class ArticleController {
   @GetMapping(
       path = "/{id}",
       produces = {MediaType.APPLICATION_JSON_VALUE})
-  public ArticleModel findNote(HttpHeaders headers, @PathVariable("id") String id) {
+  public ArticleModel findArticle(
+      @RequestHeader HttpHeaders headers, @PathVariable("id") String id) {
     SecurityContext context = securityContextService.getContext(headers);
     return articleService
         .findArticle(context.getRealm(), context.getUserid(), id)
@@ -83,7 +84,7 @@ public class ArticleController {
   @PostMapping(
       consumes = {MediaType.APPLICATION_JSON_VALUE},
       produces = {MediaType.APPLICATION_JSON_VALUE})
-  public ArticleModel createNote(
+  public ArticleModel createArticle(
       @RequestHeader HttpHeaders headers, @RequestBody ArticleCreateModel requestBody) {
     SecurityContext context = securityContextService.getContext(headers);
     return articleService.createArticle(context.getRealm(), context.getUserid(), requestBody);
@@ -93,7 +94,7 @@ public class ArticleController {
       path = "/{id}",
       consumes = {MediaType.APPLICATION_JSON_VALUE},
       produces = {MediaType.APPLICATION_JSON_VALUE})
-  public ArticleModel updateNote(
+  public ArticleModel updateArticle(
       @RequestHeader HttpHeaders headers,
       @PathVariable("id") String id,
       @RequestBody ArticleUpdateModel requestBody) {
@@ -104,10 +105,7 @@ public class ArticleController {
   }
 
   @DeleteMapping(path = "/{id}")
-  public void deleteNote(
-      @RequestHeader HttpHeaders headers,
-      @PathVariable("id") String id,
-      @RequestBody ArticleUpdateModel requestBody) {
+  public void deleteArticle(@RequestHeader HttpHeaders headers, @PathVariable("id") String id) {
     SecurityContext context = securityContextService.getContext(headers);
     articleService.deleteArticle(context.getRealm(), context.getUserid(), id);
   }

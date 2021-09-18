@@ -43,6 +43,7 @@ public class ArticleService {
   private ArticleModel toModel(ArticleEntity article) {
     return new ArticleModel(
         article.getUid(),
+        article.getTitle(),
         article.getContent(),
         article.getLastModifiedDate() != null
             ? article.getLastModifiedDate().atOffset(ZoneOffset.UTC).toString()
@@ -68,7 +69,11 @@ public class ArticleService {
   public ArticleModel createArticle(String realm, String owner, ArticleCreate create) {
     ArticleEntity article =
         new ArticleEntity(
-            realm, UUID.randomUUID().toString().replace("-", ""), owner, create.getContent());
+            realm,
+            UUID.randomUUID().toString().replace("-", ""),
+            owner,
+            create.getTitle(),
+            create.getContent());
     article = articleRepository.save(article);
     return toModel(article);
   }
