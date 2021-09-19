@@ -21,7 +21,7 @@ public class HeaderContextService implements SecurityContextService {
       @Value("${default-userid:anonymous}") String defaultUserid,
       @Value("${realm-header:X-Auth-Realm}") String realmHeader,
       @Value("${userid-header:X-Auth-Userid}") String useridHeader,
-      @Value("${userid-header:X-Auth-Username}") String usernameHeader) {
+      @Value("${username-header:X-Auth-Username}") String usernameHeader) {
     this.anonymousAllowed = anonymousAllowed;
     this.defaultRealm = defaultRealm;
     this.defaultUserid = defaultUserid;
