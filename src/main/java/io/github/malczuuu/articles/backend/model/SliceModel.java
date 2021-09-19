@@ -29,11 +29,18 @@ public class SliceModel<T> {
 
   public static class Links {
 
+    private final String self;
     private final String next;
 
     @JsonCreator
-    public Links(@JsonProperty("next") String next) {
+    public Links(@JsonProperty("self") String self, @JsonProperty("next") String next) {
+      this.self = self;
       this.next = next;
+    }
+
+    @JsonProperty("self")
+    public String getSelf() {
+      return self;
     }
 
     @JsonProperty("next")

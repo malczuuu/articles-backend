@@ -29,15 +29,26 @@ public class ArticleService {
     Slice<ArticleEntity> entities = articleRepository.findArticles(realm, owner, limit);
     return new SliceModel<>(
         entities.getContent().stream().map(this::toModel).collect(Collectors.toList()),
-        makeLinks(limit, entities).orElse(null));
+        makeLinks(limit, entities));
   }
 
-  private Optional<SliceModel.Links> makeLinks(int limit, Slice<ArticleEntity> entities) {
-    return Optional.ofNullable(entities.getPagingState())
-        .map(
-            e ->
-                String.format("/api/articles?limit=%s&cursor=%s", limit, entities.getPagingState()))
-        .map(SliceModel.Links::new);
+  private SliceModel.Links makeLinks(int limit, Slice<ArticleEntity> entities) {
+    return makeLinks(limit, null, entities);
+  }
+
+  private SliceModel.Links makeLinks(int limit, String cursor, Slice<ArticleEntity> entities) {
+    String self = makeSelfLink(limit, cursor);
+    String next =
+        entities.getPagingState() != null
+            ? String.format("/api/articles?limit=%d&cursor=%s", limit, entities.getPagingState())
+            : null;
+    return new SliceModel.Links(self, next);
+  }
+
+  private String makeSelfLink(int limit, String cursor) {
+    return cursor != null
+        ? String.format("/api/articles?limit=%d&cursor=%s", limit, cursor)
+        : String.format("/api/articles?limit=%d", limit);
   }
 
   private ArticleModel toModel(ArticleEntity article) {
@@ -56,7 +67,7 @@ public class ArticleService {
       Slice<ArticleEntity> entities = articleRepository.findArticles(realm, owner, limit, cursor);
       return new SliceModel<>(
           entities.getContent().stream().map(this::toModel).collect(Collectors.toList()),
-          makeLinks(limit, entities).orElse(null));
+          makeLinks(limit, cursor, entities));
     } catch (PagingStateException e) {
       throw new InvalidCursorException();
     }
@@ -82,11 +93,11 @@ public class ArticleService {
       String realm, String owner, String id, ArticleUpdate update) {
     return transactions.execute(
         transaction -> {
-          Optional<ArticleEntity> optionalNote = articleRepository.findArticle(realm, owner, id);
-          if (optionalNote.isEmpty()) {
+          Optional<ArticleEntity> optionalArticle = articleRepository.findArticle(realm, owner, id);
+          if (optionalArticle.isEmpty()) {
             return Optional.empty();
           }
-          ArticleEntity article = optionalNote.get();
+          ArticleEntity article = optionalArticle.get();
 
           article.setContent(update.getContent());
           article = articleRepository.save(article);
