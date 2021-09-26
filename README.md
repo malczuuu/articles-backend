@@ -65,6 +65,11 @@ To run the service itself use `bootRun` Gradle task.
 $ ./gradlew bootRun
 ```
 
+The application will be available on [`http://localhost:8080`](http://localhost:8080).
+
+**Note**, that each endpoint would require proper authorization header to be attached. Therefore,
+plain access via browser won't be possible.
+
 Alternatively, build and launch the jarfile.
 
 ```shell
