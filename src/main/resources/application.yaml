@@ -14,4 +14,9 @@ spring:
     default-property-inclusion: non_null
     property-naming-strategy: SNAKE_CASE
 
-anonymous-allowed: true
+anonymous-allowed: false
+default-realm: default
+default-userid: anonymous
+realm-header: X-Auth-Realm
+userid-header: X-Auth-Userid
+username-header: X-Auth-Username
