@@ -14,30 +14,6 @@ authorized via configured headers, attached to HTTP request (for example by a re
 
 ## Configuration
 
-* `anonymous-allowed`
-
-  Whether to allow anonymous access of API endpoints.
-
-  Environment variable name: `ANONYMOUS_ALLOWED`.
-
-  Default value: `false`.
-
-* `default-realm`
-
-  The name of a default realm, if anonymous access is allowed.
-
-  Environment variable name: `DEFAULT_REALM`.
-
-  Default value: `default`.
-
-* `default-userid`
-
-  The identifier of a default user (and username as well), if anonymous access is allowed.
-
-  Environment variable name: `DEFAULT_USERID`.
-
-  Default value: `anonymous`.
-
 * `realm-header`
 
   The name of a header holding the `realm` (tenant equivalent in project terminology).

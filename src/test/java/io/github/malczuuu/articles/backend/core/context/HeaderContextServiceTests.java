@@ -10,38 +10,14 @@ import org.springframework.http.HttpHeaders;
 
 class HeaderContextServiceTests {
 
-  private final String defaultRealm = "default";
-  private final String defaultUserid = "anonymous";
   private final String realmHeader = "X-Auth-Realm";
   private final String useridHeader = "X-Auth-Userid";
   private final String usernameHeader = "X-Auth-Username";
 
   @Test
-  void shouldAllowAnonymousAccess() {
+  void shouldExtractContextFromHeaders() {
     SecurityContextService service =
-        new HeaderContextService(
-            true, defaultRealm, defaultUserid, realmHeader, useridHeader, usernameHeader);
-
-    HttpHeaders headers = new HttpHeaders();
-
-    SecurityContext context = service.getContext(headers);
-
-    assertEquals(defaultRealm, context.getRealm());
-    assertEquals(defaultUserid, context.getUserid());
-    assertEquals(defaultUserid, context.getUsername());
-  }
-
-  @ParameterizedTest
-  @CsvSource({"true", "false"})
-  void shouldExtractContextFromHeadersRegardlessOfAnonymousAllowed(boolean anonymousAllowed) {
-    SecurityContextService service =
-        new HeaderContextService(
-            anonymousAllowed,
-            defaultRealm,
-            defaultUserid,
-            realmHeader,
-            useridHeader,
-            usernameHeader);
+        new HeaderContextService(realmHeader, useridHeader, usernameHeader);
     String realm = "shire";
     String userid = "00000000-0000-0000-0000-000000000000";
     String username = "frodo.baggins";
@@ -62,8 +38,7 @@ class HeaderContextServiceTests {
   @CsvSource({"true", "false"})
   void shouldExtractContextFromHeadersRegardlessCaseSensitivity(boolean uppercase) {
     SecurityContextService service =
-        new HeaderContextService(
-            false, defaultRealm, defaultUserid, realmHeader, useridHeader, usernameHeader);
+        new HeaderContextService(realmHeader, useridHeader, usernameHeader);
     String realm = "shire";
     String userid = "00000000-0000-0000-0000-000000000000";
     String username = "frodo.baggins";
@@ -83,8 +58,7 @@ class HeaderContextServiceTests {
   @Test
   void shouldDenyAnonymousAccess() {
     SecurityContextService service =
-        new HeaderContextService(
-            false, defaultRealm, defaultUserid, realmHeader, useridHeader, usernameHeader);
+        new HeaderContextService(realmHeader, useridHeader, usernameHeader);
 
     HttpHeaders headers = new HttpHeaders();
 
@@ -92,10 +66,9 @@ class HeaderContextServiceTests {
   }
 
   @Test
-  void shouldDenyAccessOnInvalidHeaders() {
+  void shouldDenyAccessOnUnknownHeaders() {
     SecurityContextService service =
-        new HeaderContextService(
-            false, defaultRealm, defaultUserid, realmHeader, useridHeader, usernameHeader);
+        new HeaderContextService(realmHeader, useridHeader, usernameHeader);
 
     HttpHeaders headers = new HttpHeaders();
     headers.set("X-Realm", "shire");
