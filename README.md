@@ -85,7 +85,7 @@ Launching should work fine with most IDEs (tested with IntelliJ IDEA).
 * [`articles-webapp`][articles-webapp], which holds frontend application.
 * [`articles-setup`][articles-setup], which holds Docker environment setup.
 
-[articles-backend]: https://github.com/malczuuu/articles-setup
+[articles-backend]: https://github.com/malczuuu/articles-backend
 
 [articles-webapp]: https://github.com/malczuuu/articles-webapp
 
