@@ -50,7 +50,7 @@ $ docker build -t articles-backend .
 ## Running on local machine
 
 Running locally requires MongoDB database with proper indexes setup to be up and running. Use
-[`articles-setup`][articles-setup] repository to launch such database.
+[`articles-app`][articles-app] repository to launch such database.
 
 ```shell
 $ docker-compose up -d mongo
@@ -81,14 +81,14 @@ Launching should work fine with most IDEs (tested with IntelliJ IDEA).
 
 ## Project repositories
 
+* [`articles-app`][articles-app], which holds Docker environment setup.
 * [`articles-backend`][articles-backend], which holds backend application.
 * [`articles-webapp`][articles-webapp], which holds frontend application.
-* [`articles-setup`][articles-setup], which holds Docker environment setup.
 
 [articles-backend]: https://github.com/malczuuu/articles-backend
 
 [articles-webapp]: https://github.com/malczuuu/articles-webapp
 
-[articles-setup]: https://github.com/malczuuu/articles-setup
+[articles-app]: https://github.com/malczuuu/articles-app
 
-[mongo-init-scripts]: https://github.com/malczuuu/articles-setup/blob/master/conf/mongodb
+[mongo-init-scripts]: https://github.com/malczuuu/articles-app/blob/master/conf/mongodb
